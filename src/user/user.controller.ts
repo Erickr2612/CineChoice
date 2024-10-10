@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.model';
+import {Util} from '../system/util'
 
 @Controller('user')
 export class UserController {
@@ -18,9 +19,9 @@ export class UserController {
 
     @Post()
     async create(@Body() user: Partial<User>): Promise<User> {
+        user.email = Util.emailValidate(user.email);
         return this.userService.create(user);
     }
-
 
     @Delete(':id')
     async remove(@Param('id') id: number): Promise<void> {
